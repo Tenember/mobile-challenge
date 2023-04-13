@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 import { observer } from "mobx-react-lite";
 import { ResizeMode, Video } from "expo-av";
 
@@ -8,32 +8,18 @@ import { useStores } from "../../stores";
 
 const Videos = () => {
   const { VideosStore } = useStores();
-  const [videos, setVideos] = useState([]);
-
-  useEffect(() => {
-    setVideos(VideosStore.list);
-  }, [VideosStore.list]);
-
-  if (!videos.length) {
-    return (
-      <View style={AppStyle.container}>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
 
   return (
     <View style={AppStyle.container}>
       {/*
         Todo #2:
-        - Fetch videos from the Videos store
         - Create a horizontal scroll view
         - Add fetched videos to the scroll view
       */}
       <Video
         style={Styles.video}
         source={{
-          uri: videos[0].videoUrl,
+          uri: "https://res.cloudinary.com/hsiz9ovy1/video/upload/v1680209329/sharing/ending_wp443t.mp4",
         }}
         shouldPlay={true}
         useNativeControls={false}
