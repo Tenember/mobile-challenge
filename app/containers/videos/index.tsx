@@ -16,6 +16,13 @@ const Videos = () => {
   const { VideosStore } = useStores();
   const { width } = useWindowDimensions(); // Get the width of the screen to use for the ScrollView
 
+  // Fetch the videos from the API
+  useEffect(() => {
+    VideosStore.fetch();
+  }, [VideosStore]);
+
+  // TODO : Stop the first video when the user scrolls to the next video and start the next video
+
   return (
     <View style={AppStyle.container}>
       <ScrollView
@@ -24,26 +31,17 @@ const Videos = () => {
         snapToInterval={width} // Snap to the next video
         decelerationRate={"fast"} // Faster decelerationRate to make the user experience better
       >
-        <Video
-          style={(Styles.video, { width: width })} // Set the width of the video to the width of the screen
-          source={{
-            uri: "https://res.cloudinary.com/hsiz9ovy1/video/upload/v1680209329/sharing/ending_wp443t.mp4",
-          }}
-          shouldPlay={true}
-          useNativeControls={true}
-          isLooping
-          resizeMode={ResizeMode.COVER}
-        />
-        <Video
-          style={(Styles.video, { width: width })}
-          source={{
-            uri: "https://res.cloudinary.com/hsiz9ovy1/video/upload/v1680209329/sharing/ending_wp443t.mp4",
-          }}
-          shouldPlay={true}
-          useNativeControls={false}
-          isLooping
-          resizeMode={ResizeMode.COVER}
-        />
+        {VideosStore.list.map((video, index) => (
+          <Video
+            key={index}
+            style={(Styles.video, { width: width })} // Set the width of the video to the width of the screen
+            source={{ uri: video.videoUrl }}
+            shouldPlay={index === 0}
+            useNativeControls={false}
+            isLooping
+            resizeMode={ResizeMode.COVER}
+          />
+        ))}
       </ScrollView>
     </View>
   );
