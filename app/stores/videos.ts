@@ -3,6 +3,8 @@
  */
 import { makeAutoObservable, runInAction } from "mobx";
 import { VideoType } from "../../types/video";
+import { getVideos } from "../api/videos";
+
 export default class VideosStore {
   loading: boolean = false;
   list: VideoType[] = [];
@@ -18,10 +20,11 @@ export default class VideosStore {
   async fetch() {
     try {
       this.loading = true;
+      // Fetch videos from API and wait for the response
+      const fetchedVideos = await getVideos();
       runInAction(() => {
-        // Todo #1:
-        // Fetch all videos from API
-        // and set them to the store
+        // Merge fetched videos with the ones in the store
+        this.list = [...this.list, ...fetchedVideos];
       });
     } catch (error) {
       console.error(error);
